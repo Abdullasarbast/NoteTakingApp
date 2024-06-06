@@ -1,4 +1,3 @@
-﻿# NoteTakingApp
 # Note Taking App
 
 This is a simple note-taking application built using React for the frontend, Node.js for the backend, and MySQL for the database. Users can register, login, create, update, and delete notes.
