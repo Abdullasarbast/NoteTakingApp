@@ -5,7 +5,7 @@ import Validation from '../validation/NoteValidation';
 
 export default function AddNote() {
     const navigate = useNavigate();
-
+    axios.defaults.withCredentials = true;
     const [user, setUser] = useState(null);
     const [values, setValues] = useState({
         title: '',
@@ -15,16 +15,17 @@ export default function AddNote() {
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8081/Home', { withCredentials: true })
-            .then(res => {
-                if (!res.data.valid) {
-                    navigate('/');
-                } else {
-                    setUser(res.data.user_id);
-                    setValues(prevValues => ({ ...prevValues, user_id: res.data.user_id }));
-                }
-            })
-            .catch(err => console.log(err));
+        axios.get('http://localhost:8081/', { withCredentials: true })
+    .then(res => {
+        console.log(res.data);
+        if (!res.data.valid) {
+            navigate('/');
+        } else {
+            setUser(res.data.user_id);
+            setValues(prevValues => ({ ...prevValues, user_id: res.data.user_id }));
+        }
+    })
+    .catch(err => console.log(err));
     }, []);
 
     const handleInput = (e) => {
@@ -37,10 +38,10 @@ export default function AddNote() {
         setErrors(validationErrors);
     
         if (Object.keys(validationErrors).every(key => validationErrors[key] === '')) {
-            axios.post('http://localhost:8081/addNote', values, { withCredentials: true })
-                .then(res => {
+            axios.post('http://localhost:8081/notes/addNote', values, { withCredentials: true })
+            .then(res => {
                     if (res.data.message === 'success') {
-                        navigate('/Home');
+                        navigate('/');
                     }
                 })
                 .catch(err => console.log(err));
